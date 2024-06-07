@@ -2,16 +2,16 @@ import { FastifyInstance } from "fastify";
 import { DataSource, EntityTarget, Repository } from "typeorm";
 import { z } from "zod";
 import * as http from 'http';
-export interface IFoxFlowPlugin<R = any, E = any> {
+export interface IFastiFoxPlugin<R = any, E = any> {
   name: string
   register: (data: R) => void
   execute: (data: E) => void
 }
 
 export interface IFoxFlowRoutePluginConnector {
-  start: IFoxFlowPlugin[]
-  middle: IFoxFlowPlugin[]
-  end: IFoxFlowPlugin[]
+  start: IFastiFoxPlugin[]
+  middle: IFastiFoxPlugin[]
+  end: IFastiFoxPlugin[]
 }
 
 export interface IUniqueRoute {
@@ -20,7 +20,7 @@ export interface IUniqueRoute {
   outputPlugins?: Array<(input: any)=> Promise<void>>
 }
 
-export interface IFoxFlowRoute {
+export interface IFastiFoxRoute {
   name?: {
     singular: string
     plural: string
@@ -66,7 +66,7 @@ export interface IGenerateCrudRouteMaker {
 }
 
 export interface IGenerateCrudInitialize {
-  route: IFoxFlowRoute
+  route: IFastiFoxRoute
 }
 
 export interface IFoxFlowContructor {
@@ -77,11 +77,11 @@ export interface IFoxFlowContructor {
 
 export interface IGenerateCrudContructor {
   entity: EntityTarget<any>;
-  route: IFoxFlowRoute
+  route: IFastiFoxRoute
 }
 
 export interface IGenerateCrudRoute {
-  route: IFoxFlowRoute
+  route: IFastiFoxRoute
 }
 
 export interface IGenerateCrudModule {
@@ -89,7 +89,7 @@ export interface IGenerateCrudModule {
   datasource: DataSource,
 }
 
-export abstract class FoxFlowPlugin {
+export abstract class FastiFoxPlugin {
   repository: Repository<any>;
   entity: EntityTarget<any>;
   server: FastifyInstance;
