@@ -1,5 +1,5 @@
-
-# FastiFox
+![🦊FastiFox](https://i.ibb.co/NVd0wBR/Inserir-um-t-tulo.png)
+# 🦊FastiFox
 
 **Fastifox** is a mini framework for Fastify to facilitate the creation of APIs and CRUD operations with just one file.
 
@@ -12,7 +12,7 @@ Install the necessary dependencies:
 npm install fastify typeorm zod
 ```
 
-## Installation
+## 🚀 Installation
 
 Install the package via npm:
 
@@ -20,7 +20,7 @@ Install the package via npm:
 npm install fastifox
 ```
 
-## Usage
+## 🛠️ Usage
 
 ### Basic Usage
 
@@ -92,13 +92,13 @@ const startServer = async () => {
 startServer();
 ```
 
-### Detailed Explanation
+### 📚 Detailed Explanation
 
 1. **Create an Entity**: Define your TypeORM entity.
 2. **Generate CRUD Routes**: Use `CrudGenerator` to generate CRUD routes for your entity.
 3. **Run the Server**: Initialize Fastify and TypeORM, then start the server.
 
-## Contributing
+## 🤝 Contributing
 
 We welcome contributions! Please follow these steps to contribute:
 
@@ -113,8 +113,8 @@ We welcome contributions! Please follow these steps to contribute:
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/your-username/my-crud-generator.git
-   cd my-crud-generator
+   git clone https://github.com/dotbruu/fastifox
+   cd fastifox
    ```
 
 2. Install dependencies:
@@ -135,7 +135,7 @@ We welcome contributions! Please follow these steps to contribute:
    npm test
    ```
 
-## Acknowledgments
+## 🙌 Acknowledgments
 
 - TypeORM: A powerful ORM for TypeScript and JavaScript.
 - Zod: A TypeScript-first schema declaration and validation library.
