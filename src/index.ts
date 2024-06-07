@@ -5,7 +5,7 @@ import { FastiFoxModule } from './helpers/fastifox-module.helper';
 import { IFastiFoxModuleContructor } from './protocols/crud-generator-helper.struct';
 import { CrudGenerator } from './services/crud-generator.service';
 
-class FastiFlox {
+class FastiFox {
   async initialize({ context, directory }: {
     directory: string, context: IFastiFoxModuleContructor
   }) {
@@ -28,7 +28,7 @@ class FastiFlox {
 }
 
 export {
-  FastiFlox,
+  FastiFox,
   CrudGenerator,
   FastiFoxModule,
 }
