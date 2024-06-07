@@ -22,18 +22,35 @@ npm install fastifox
 
 ## 🛠️ Usage
 
-### Basic Usage
+### Setup
+Start Fastifox by passing the correct parameters in your application's bootstrap.
+
+```typescript
+  import { FastiFox } from 'fastifox'
+
+  const fastifox = new FastiFox()
+  fastifox.initialize({
+    directory: './src/**/*.module{.ts,.js}',
+    context: {
+      datasource: typeormSouce,
+      server: fastifyInstance
+    }
+  })
+```
+
+### CRUD Generator
+To automatically generate a CRUD, you need to have the TypeORM entity configured and Zod schemas in place if you want to add validations to the routes.
+Import the CrudGenerator from Fastifox and make the necessary definitions.
 
 ```typescript
 import { FastifyInstance } from 'fastify';
 import { DataSource } from 'typeorm';
-import { FastiFox, CrudGenerator } from 'fastifox'
+import { CrudGenerator } from 'fastifox'
 import { YourEntity } from './entities/YourEntity';
 import { z } from 'zod';
 
 class MyCrudGenerator extends CrudGenerator {
-  constructor(server: FastifyInstance, datasource: DataSource) {
-    super(server, datasource);
+  init(){
     this.generate({
       entity: YourEntity,
       route: {
@@ -57,40 +74,75 @@ class MyCrudGenerator extends CrudGenerator {
         delete: {
           inputPlugins
         }
-      }})
+    }})
   }
 }
+```
+Using the CrudGenerator and correctly mapping the file at the start of the application will automatically generate the routes.
 
-const startServer = async () => {
-  const server: FastifyInstance = require('fastify')();
-  const datasource = new DataSource({
-    type: 'sqlite',
-    database: 'database.sqlite',
-    entities: [YourEntity],
-    synchronize: true,
-  });
-  await datasource.initialize();
+| Field  | Description |
+| ------------- | ------------- |
+| inputPlugins  | An array of plugins to be executed at the start of the request (route). |
+| findableFields  | The entity fields that should be used to search or validate data. |
+| withPagination  | Enables pagination for routes that list multiple data entries. |
+| schema  | It's the Zod schema object. |
 
-  const fastifox = new FastiFox()
-  fastifox.initialize({
-    directory: './src/**/*.module{.ts,.js}',
-    context: {
-      datasource: typeormSouce,
-      server: fastifyInstance
-    }
+**Additional details**
+| Field  | Description |
+| ------------- | ------------- |
+| searchTerm  | Use in GET routes to fetch data. |
+| fields  | Use to select the fields that should be returned in the request. |
+
+## Auth JWT (Plugin)
+This plugin generates JWT token authentication as well as the Sign in and Sign up routes.
+
+### Usage
+Instantiate the plugin and add the necessary data for authentication configuration.
+
+```typescript
+  import { JWTAuthPlugin } from "fastify";
+
+  const foxFlowAuth = new JWTAuthPlugin({
+    datasource: this.datasource,
+    server: this.server,
+    entity: User,
+  })
+  
+  foxFlowAuth.register({
+    secret: enviroment.jwt.secret
   })
 
-  server.listen(3000, (err) => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
+  foxFlowAuth.execute({
+    fieldsToken: ['id', 'email', 'roleSlug'],
+    findableField: 'email',
+    hashedField: 'password',
+    signUp: {
+      schema: signUpSchema
+    },
+    signIn: {
+      schema: signInSchema
+    },
+    defaultValues: {
+      roleSlug: 'superuser'
     }
-    console.log('Server listening on http://localhost:3000');
-  });
-};
-
-startServer();
+  })
 ```
+After the configuration, the /sign-in and /sign-up routes will be generated.
+
+**Using the authentication middleware**
+
+```typescript
+  // ... other code
+    update: {
+    schema: updateUserSchema,
+    inputPlugins: [
+      JWTAuthPlugin.verifyToken()
+    ]
+  },
+  // ... other code
+```
+
+
 
 ### 📚 Detailed Explanation
 
