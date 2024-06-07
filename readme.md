@@ -1,5 +1,5 @@
 
-# @fastfox/my-crud-generator
+# @fastfox
 
 **Fastifox** is a mini framework for Fastify to facilitate the creation of APIs and CRUD operations with just one file.
 
