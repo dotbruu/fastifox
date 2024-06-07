@@ -4,8 +4,6 @@ import { errorHandler } from './helpers/exception-handler.helper';
 import { FastiFoxModule } from './helpers/fastifox-module.helper';
 import { IFastiFoxModuleContructor } from './protocols/crud-generator-helper.struct';
 import { CrudGenerator } from './services/crud-generator.service';
-export * from './protocols/crud-generator-helper.struct';
-export * from './helpers';
 
 class FastiFox {
   async initialize({ context, directory }: {
@@ -34,3 +32,8 @@ export {
   CrudGenerator,
   FastiFoxModule,
 }
+
+export * from './protocols/crud-generator-helper.struct';
+export * from './helpers';
+export * from './plugins/jwt-auth'
+export * from './middlewares';
