@@ -18,10 +18,8 @@ export class JWTAuthPlugin extends FastiFoxPlugin implements
    async execute({
       hashedField,
       findableField,
-      fieldsToken,
       signUp,
       signIn,
-      defaultValues
    }: IExecuteAuthPlugin) {
       this.server.post('/sign-up', async (request: FastifyRequest | any, reply) => {
 
@@ -48,7 +46,7 @@ export class JWTAuthPlugin extends FastiFoxPlugin implements
             ...request.body as any,
             [findableField]: request.body[findableField],
             [hashedField]: hashedPassword,
-            ...defaultValues
+            ...(signUp?.defaultValues ?? {})
          });
 
          const dataCreated = await this.repository.save(data);
@@ -80,7 +78,7 @@ export class JWTAuthPlugin extends FastiFoxPlugin implements
          }
 
          const dataToken: Record<string, string> = {};
-         for(const field of fieldsToken){
+         for(const field of signIn!.fieldsToken){
             if(!dataExists[field]){
                throw new BadRequestException('Insufficient data to generate token.');
             }
@@ -88,7 +86,14 @@ export class JWTAuthPlugin extends FastiFoxPlugin implements
          }
      
          const token = this.server.jwt.sign(dataToken);
-         reply.send({ token });
+
+         let returnableFields: Record<string, any> = {}
+         if(signIn?.returnFields){
+            for(const field of signIn.returnFields){
+               returnableFields[field] = dataExists[field];
+            }
+         }
+         reply.send({ ...returnableFields, token });
        });
    }
    
@@ -98,7 +103,7 @@ export class JWTAuthPlugin extends FastiFoxPlugin implements
          try {
             await request.jwtVerify();
          } catch (error) {
-            if(!!allowAll) return 
+            if(allowAll) return 
             throw new UnauthorizedException('Access denied. Please verify your credentials.');
          }
       }

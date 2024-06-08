@@ -1,7 +1,8 @@
-![🦊FastiFox](https://uploaddeimagens.com.br/images/004/794/703/full/Design_sem_nome.png)
 # 🦊FastiFox
 
 **Fastifox** is a mini framework for Fastify to facilitate the creation of APIs and CRUD operations with just one file.
+
+![🦊FastiFox](https://uploaddeimagens.com.br/images/004/794/703/full/Design_sem_nome.png)
 
 ## Prerequisites
 To use Fastifox, you need to have TypeORM for database operations and Zod for data validation.
